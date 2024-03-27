@@ -1,0 +1,40 @@
+.crypto-list-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .crypto-list-heading {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .crypto-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .crypto-table th,
+  .crypto-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+  }
+  
+  .crypto-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    text-align: left;
+  }
+  
+  .crypto-table td {
+    text-align: left;
+  }
+  
+  .crypto-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .crypto-table tr:hover {
+    background-color: #f2f2f2;
+  }
+  
