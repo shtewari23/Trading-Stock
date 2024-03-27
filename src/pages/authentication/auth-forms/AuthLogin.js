@@ -5,7 +5,6 @@ import { Link as RouterLink } from 'react-router-dom';
 import {
   Button,
   Checkbox,
-  Divider,
   FormControlLabel,
   FormHelperText,
   Grid,
@@ -157,9 +156,7 @@ const AuthLogin = () => {
                 </AnimateButton>
               </Grid>
               <Grid item xs={12}>
-                <Divider>
-                  <Typography variant="caption"> Login with</Typography>
-                </Divider>
+              
               </Grid>
               <Grid item xs={12}>
                 <FirebaseSocial />
