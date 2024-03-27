@@ -3,7 +3,6 @@ import { lazy } from 'react';
 // project import
 import Loadable from 'components/Loadable';
 import MainLayout from 'layout/MainLayout';
-import CryptoTrading from 'pages/components-overview/CryptoTrading';
 
 // render - dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
@@ -13,7 +12,7 @@ const SamplePage = Loadable(lazy(() => import('pages/extra-pages/SamplePage')));
 
 // render - utilities
 const Typography = Loadable(lazy(() => import('pages/components-overview/Typography')));
-const Color = Loadable(lazy(() => import('pages/components-overview/Color')));
+const Exchange = Loadable(lazy(() => import('pages/components-overview/Exchange')));
 const Shadow = Loadable(lazy(() => import('pages/components-overview/Shadow')));
 
 // ==============================|| MAIN ROUTING ||============================== //
@@ -28,7 +27,7 @@ const MainRoutes = {
     },
     {
       path: 'color',
-      element: <Color />
+      element: <Exchange />
     },
     {
       path: 'dashboard',
@@ -51,10 +50,7 @@ const MainRoutes = {
       path: 'typography',
       element: <Typography />
     },
-    {
-      path: 'icons/ant',
-      element: <CryptoTrading />
-    }
+  
   ]
 };
 

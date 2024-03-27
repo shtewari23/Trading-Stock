@@ -34,6 +34,7 @@ const CandlestickChart = ({ data }) => {
   return (
     <div className="container">
       <div className="search-bar">
+       <h3 style={{display:'inline-block' , marginLeft:'28px'}}> Trade  </h3>
         <input
           type="text"
           placeholder="Search Stock..."

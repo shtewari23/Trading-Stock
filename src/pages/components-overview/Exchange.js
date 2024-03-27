@@ -1,6 +1,6 @@
 import React from 'react';
 import CandlestickChart from './CandleStickChart';
-const Color =()=>{
+const Exchange =()=>{
 const dummyData = [
   {
     name: 'Reliance',
@@ -107,4 +107,4 @@ return(
  
 );
 }
-export default Color
+export default Exchange
