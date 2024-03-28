@@ -7,6 +7,7 @@ import MinimalLayout from 'layout/MinimalLayout';
 // render - login
 const AuthLogin = Loadable(lazy(() => import('pages/authentication/Login')));
 const AuthRegister = Loadable(lazy(() => import('pages/authentication/Register')));
+const AxiomSSOLogin = Loadable(lazy(() => import('pages/authentication/sso/openid-login/AxiomSSOLogin')));
 
 // ==============================|| AUTH ROUTING ||============================== //
 
@@ -17,6 +18,10 @@ const LoginRoutes = {
     {
       path: 'login',
       element: <AuthLogin />
+    },
+    {
+      path: 'auth/sso/openid-login',
+      element: <AxiomSSOLogin />
     },
     {
       path: 'register',

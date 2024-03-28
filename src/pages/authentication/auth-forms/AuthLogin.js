@@ -24,7 +24,7 @@ import { Formik } from 'formik';
 // project import
 import FirebaseSocial from './FirebaseSocial';
 import AnimateButton from 'components/@extended/AnimateButton';
-
+import { Divider } from '@mui/material';
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 
@@ -149,15 +149,16 @@ const AuthLogin = () => {
                 </Grid>
               )}
               <Grid item xs={12}>
+                <Divider > </Divider>
+              </Grid>
+              <Grid item xs={12}>
                 <AnimateButton>
                   <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">
                     Login
                   </Button>
                 </AnimateButton>
               </Grid>
-              <Grid item xs={12}>
-              
-              </Grid>
+              <Grid item xs={12}></Grid>
               <Grid item xs={12}>
                 <FirebaseSocial />
               </Grid>
