@@ -43,6 +43,16 @@ const CandlestickChart = ({ data }) => {
           className="search-input"
         />
       </div>
+      <div className="trade-panel">
+        <div className="input-group">
+          <input type="text" placeholder="Quantity" value={quantity} onChange={handleQuantityChange} />
+          <input type="text" placeholder="Price Limit" value={priceLimit} onChange={handlePriceLimitChange} />
+        </div>
+        <div className="button-group">
+          <button className="buy-button" onClick={handleBuy}>Buy</button>
+          <button className="sell-button" onClick={handleSell}>Sell</button>
+        </div>
+      </div>
       <div className="chart-container">
         {filteredData.map((stock, index) => (
           <div key={index} className="stock-chart">
@@ -76,16 +86,7 @@ const CandlestickChart = ({ data }) => {
           </div>
         ))}
       </div>
-      <div className="trade-panel">
-        <div className="input-group">
-          <input type="text" placeholder="Quantity" value={quantity} onChange={handleQuantityChange} />
-          <input type="text" placeholder="Price Limit" value={priceLimit} onChange={handlePriceLimitChange} />
-        </div>
-        <div className="button-group">
-          <button className="buy-button" onClick={handleBuy}>Buy</button>
-          <button className="sell-button" onClick={handleSell}>Sell</button>
-        </div>
-      </div>
+     
     </div>
   );
 };

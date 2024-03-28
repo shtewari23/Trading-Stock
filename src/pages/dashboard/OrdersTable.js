@@ -1,14 +1,8 @@
-import PropTypes from 'prop-types';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-
-// material-ui
-import { Box, Link, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-
-// third-party
+import PropTypes from 'prop-types';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Link, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import { NumericFormat } from 'react-number-format';
-
-// project import
 import Dot from 'components/@extended/Dot';
 
 function createData(trackingNo, name, fat, carbs, protein) {
@@ -54,43 +48,14 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-// ==============================|| ORDER TABLE - HEADER CELL ||============================== //
-
 const headCells = [
-  {
-    id: 'trackingNo',
-    align: 'left',
-    disablePadding: false,
-    label: 'Tracking No.'
-  },
-  {
-    id: 'name',
-    align: 'left',
-    disablePadding: true,
-    label: 'Stocks'
-  },
-  {
-    id: 'fat',
-    align: 'right',
-    disablePadding: false,
-    label: 'Total Order'
-  },
-  {
-    id: 'carbs',
-    align: 'left',
-    disablePadding: false,
-
-    label: 'Status'
-  },
-  {
-    id: 'protein',
-    align: 'right',
-    disablePadding: false,
-    label: 'Total Amount'
-  }
+  { id: 'trackingNo', align: 'left', disablePadding: false, label: 'Tracking No.' },
+  { id: 'name', align: 'left', disablePadding: true, label: 'Stocks' },
+  { id: 'fat', align: 'right', disablePadding: false, label: 'Total Order' },
+  { id: 'carbs', align: 'left', disablePadding: false, label: 'Status' },
+  { id: 'protein', align: 'right', disablePadding: false, label: 'Total Amount' },
+  { id: 'actions', align: 'right', disablePadding: false, label: 'Actions' }
 ];
-
-// ==============================|| ORDER TABLE - HEADER ||============================== //
 
 function OrderTableHead({ order, orderBy }) {
   return (
@@ -115,8 +80,6 @@ OrderTableHead.propTypes = {
   order: PropTypes.string,
   orderBy: PropTypes.string
 };
-
-// ==============================|| ORDER TABLE - STATUS ||============================== //
 
 const OrderStatus = ({ status }) => {
   let color;
@@ -152,12 +115,47 @@ OrderStatus.propTypes = {
   status: PropTypes.number
 };
 
-// ==============================|| ORDER TABLE ||============================== //
-
 export default function OrderTable() {
   const [order] = useState('asc');
   const [orderBy] = useState('trackingNo');
   const [selected] = useState([]);
+  const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [openModifyDialog, setOpenModifyDialog] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [editedTotalOrder, setEditedTotalOrder] = useState('');
+  const [editedTotalAmount, setEditedTotalAmount] = useState('');
+
+  const handleOpenEditDialog = (row) => {
+    setSelectedRow(row);
+    setOpenEditDialog(true);
+    setEditedTotalOrder(row.fat.toString());
+    setEditedTotalAmount(row.protein.toString());
+  };
+
+  const handleCloseEditDialog = () => {
+    setOpenEditDialog(false);
+  };
+
+  const handleOpenModifyDialog = (row) => {
+    setSelectedRow(row);
+    setOpenModifyDialog(true);
+    setEditedTotalOrder(row.fat.toString());
+    setEditedTotalAmount(row.protein.toString());
+  };
+
+  const handleCloseModifyDialog = () => {
+    setOpenModifyDialog(false);
+  };
+
+  const handleUpdateEditDialog = () => {
+    // Perform update action
+    handleCloseEditDialog();
+  };
+
+  const handleUpdateModifyDialog = () => {
+    // Perform update action
+    handleCloseModifyDialog();
+  };
 
   const isSelected = (trackingNo) => selected.indexOf(trackingNo) !== -1;
 
@@ -213,12 +211,77 @@ export default function OrderTable() {
                   <TableCell align="right">
                     <NumericFormat value={row.protein} displayType="text" thousandSeparator prefix="$" />
                   </TableCell>
+                  <TableCell align="right">
+                    {row.carbs === 2 && (
+                      <Button variant="contained" sx={{ backgroundColor: 'error.main', color: 'white' }} onClick={() => handleOpenEditDialog(row)}>Edit</Button>
+                    )}
+                    {row.carbs === 0 && (
+                      <Button variant="contained" sx={{ backgroundColor: 'warning.main', color: 'white' }} onClick={() => handleOpenModifyDialog(row)}>Modify</Button>
+                    )}
+                  </TableCell>
                 </TableRow>
               );
             })}
           </TableBody>
         </Table>
       </TableContainer>
+
+      <Dialog open={openEditDialog} onClose={handleCloseEditDialog}>
+        <DialogTitle>Edit Stock Information</DialogTitle>
+        <DialogContent sx={{ width: 400 }}>
+          {selectedRow && (
+            <>
+              <TextField
+                margin="normal"
+                label="Total Order"
+                value={editedTotalOrder}
+                onChange={(e) => setEditedTotalOrder(e.target.value)}
+                fullWidth
+              />
+              <TextField
+                margin="normal"
+                label="Total Amount"
+                value={editedTotalAmount}
+                onChange={(e) => setEditedTotalAmount(e.target.value)}
+                fullWidth
+              />
+            </>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseEditDialog}>Cancel</Button>
+          <Button variant="contained" onClick={handleUpdateEditDialog} color="primary">Place Order</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={openModifyDialog} onClose={handleCloseModifyDialog}>
+        <DialogTitle>Modify Stock Information</DialogTitle>
+        <DialogContent sx={{ width: 400 }}>
+          {selectedRow && (
+            <>
+              <DialogContentText>Modify the stock information below:</DialogContentText>
+              <TextField
+                margin="normal"
+                label="Total Order"
+                value={editedTotalOrder}
+                onChange={(e) => setEditedTotalOrder(e.target.value)}
+                fullWidth
+              />
+              <TextField
+                margin="normal"
+                label="Total Amount"
+                value={editedTotalAmount}
+                onChange={(e) => setEditedTotalAmount(e.target.value)}
+                fullWidth
+              />
+            </>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModifyDialog}>Cancel</Button>
+          <Button variant="contained" onClick={handleUpdateModifyDialog} color="primary">Update</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
