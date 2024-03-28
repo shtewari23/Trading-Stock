@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink ,useNavigate } from 'react-router-dom';
 
 // material-ui
 import {
@@ -24,7 +24,7 @@ import { Formik } from 'formik';
 // project import
 import FirebaseSocial from './FirebaseSocial';
 import AnimateButton from 'components/@extended/AnimateButton';
-import { Divider } from '@mui/material';
+
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 
@@ -32,6 +32,7 @@ import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 
 const AuthLogin = () => {
   const [checked, setChecked] = React.useState(false);
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => {
@@ -41,7 +42,6 @@ const AuthLogin = () => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-
   return (
     <>
       <Formik
@@ -56,8 +56,9 @@ const AuthLogin = () => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            setStatus({ success: false });
-            setSubmitting(false);
+            setStatus({ success: true });
+            setSubmitting(true);
+            navigate('/dashboard/default');
           } catch (err) {
             setStatus({ success: false });
             setErrors({ submit: err.message });
@@ -65,7 +66,7 @@ const AuthLogin = () => {
           }
         }}
       >
-        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+        {({ errors, handleBlur, handleChange, handleSubmit, touched, values }) => (
           <form noValidate onSubmit={handleSubmit}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
@@ -149,16 +150,15 @@ const AuthLogin = () => {
                 </Grid>
               )}
               <Grid item xs={12}>
-                <Divider > </Divider>
-              </Grid>
-              <Grid item xs={12}>
                 <AnimateButton>
-                  <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">
+                  <Button fullWidth size="large" type="submit" variant="contained" color="primary" onClick={handleSubmit} >
                     Login
                   </Button>
                 </AnimateButton>
               </Grid>
-              <Grid item xs={12}></Grid>
+              <Grid item xs={12}>
+              
+              </Grid>
               <Grid item xs={12}>
                 <FirebaseSocial />
               </Grid>

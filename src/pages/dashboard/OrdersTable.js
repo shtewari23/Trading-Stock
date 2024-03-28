@@ -231,6 +231,8 @@ export default function OrderTable() {
         <DialogContent sx={{ width: 400 }}>
           {selectedRow && (
             <>
+          <DialogContentText><strong>{selectedRow.name}</strong></DialogContentText>
+
               <TextField
                 margin="normal"
                 label="Total Order"
@@ -259,7 +261,7 @@ export default function OrderTable() {
         <DialogContent sx={{ width: 400 }}>
           {selectedRow && (
             <>
-              <DialogContentText>Modify the stock information below:</DialogContentText>
+              <DialogContentText><strong>{selectedRow.name}</strong></DialogContentText>
               <TextField
                 margin="normal"
                 label="Total Order"

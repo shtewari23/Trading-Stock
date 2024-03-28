@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useRef, useState } from 'react';
+import { Link as RouterLink ,useNavigate } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -31,6 +32,8 @@ import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons
 
 // tab panel wrapper
 function TabPanel({ children, value, index, ...other }) {
+    const navigate = useNavigate(); // Initialize useNavigate hook
+
   return (
     <div role="tabpanel" hidden={value !== index} id={`profile-tabpanel-${index}`} aria-labelledby={`profile-tab-${index}`} {...other}>
       {value === index && children}
@@ -54,9 +57,15 @@ function a11yProps(index) {
 // ==============================|| HEADER CONTENT - PROFILE ||============================== //
 
 const Profile = () => {
+  const navigate = useNavigate(); // Initialize useNavigate hook
+
   const theme = useTheme();
 
   const handleLogout = async () => {
+    localStorage.clear();
+    sessionStorage.clear();
+    navigate('/login');
+
     // logout
   };
 
@@ -143,7 +152,7 @@ const Profile = () => {
                             <Stack>
                               <Typography variant="h6">John Doe</Typography>
                               <Typography variant="body2" color="textSecondary">
-                                UI/UX Designer
+                               Role: UI/UX Designer
                               </Typography>
                             </Stack>
                           </Stack>
