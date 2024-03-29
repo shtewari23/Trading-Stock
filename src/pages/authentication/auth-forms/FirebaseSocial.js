@@ -101,7 +101,7 @@ const FirebaseSocial = () => {
         // document.body.appendChild(form);
         // form.submit();
         const anchorTg = document.createElement("a");
-        anchorTg.href = `${process.env.REACT_APP_OIDC_URL}/oidc/authorize?client_id=${client_id}&scope=${scope}&response_type=${response_type}&response_mode=query&redirect_uri= ${window.location.protocol}//${window.location.host}/dashboard/default`;
+        anchorTg.href = `${process.env.REACT_APP_OIDC_URL}/oidc/authorize?client_id=${client_id}&scope=${scope}&response_type=${response_type}&response_mode=query&redirect_uri= ${window.location.protocol}//${window.location.host}/`;
         document.body.appendChild(anchorTg);
         anchorTg.click();
         // const fetchThirdPartyAPISData = async () => {
