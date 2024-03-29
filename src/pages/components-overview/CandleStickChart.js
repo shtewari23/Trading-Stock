@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import Chart from 'react-apexcharts';
 import './CandleStickChart.css';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
+import SearchIcon from '@mui/icons-material/Search';
+import InputAdornment from '@mui/material/InputAdornment';
 const CandlestickChart = ({ data }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredData, setFilteredData] = useState([]);
@@ -34,25 +38,42 @@ const CandlestickChart = ({ data }) => {
   return (
     <div className="container">
       <div className="search-bar">
-       <h3 style={{display:'inline-block' , marginLeft:'28px'}}> Trade  </h3>
-        <input
-          type="text"
-          placeholder="Search Stock..."
-          value={searchTerm}
-          onChange={handleSearch}
-          className="search-input"
-        />
+      
+        <TextField id="outlined-basic" label="Search Stock ..." variant="outlined" value={searchTerm}
+         
+          onChange={handleSearch} 
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+          
+          style={{marginLeft:"4px" , width:'100%'}} />
       </div>
       <div className="trade-panel">
-        <div className="input-group">
-          <input type="text" placeholder="Quantity" value={quantity} onChange={handleQuantityChange} />
-          <input type="text" placeholder="Price Limit" value={priceLimit} onChange={handlePriceLimitChange} />
-        </div>
-        <div className="button-group">
-          <button className="buy-button" onClick={handleBuy}>Buy</button>
-          <button className="sell-button" onClick={handleSell}>Sell</button>
-        </div>
-      </div>
+
+         
+
+          <TextField label="Price Limit" variant="outlined"
+          value={priceLimit} onChange={handlePriceLimitChange} 
+          style ={{ marginLeft:'10px' , width:"42%" ,backgroundColor:"white"} }
+          size = "small"
+            />
+             <TextField label="Quantity" variant="outlined"
+          value={quantity} onChange={handleQuantityChange} 
+          style ={{ marginLeft:'10px' , width:"42%" , backgroundColor:"white"}}
+                    size="small"
+
+            />
+
+          <Button variant="contained" color="success" onClick ={handleBuy}           style ={{ marginLeft:'10px' } }
+> 
+  Buy
+</Button>
+<Button variant="contained" color="error" onClick ={handleSell}  style ={{ marginLeft:'10px' } }>  
+Sell</Button>      </div>
       <div className="chart-container">
         {filteredData.map((stock, index) => (
           <div key={index} className="stock-chart">
