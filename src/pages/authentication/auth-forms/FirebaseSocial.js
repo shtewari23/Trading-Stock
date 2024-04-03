@@ -2,6 +2,7 @@
 import { useTheme } from "@mui/material/styles";
 import { useMediaQuery, Button, Stack } from "@mui/material";
 import AxiosInstance from "helper/Server";
+import axiomImage from "../.././../assets/axiom.png";
 
 // assets
 
@@ -60,9 +61,7 @@ const FirebaseSocial = () => {
       }}
     >
       <Button
-        startIcon={
-          <img src="/public/axiom.png" width={20} height={20} alt="logo" />
-        }
+        startIcon={<img src={axiomImage} width={20} height={20} alt="logo" />}
         variant="outlined"
         color="primary"
         fullWidth={!matchDownSM}
