@@ -61,7 +61,7 @@ const Profile = () => {
 
   const theme = useTheme();
 
-  const handleLogout = async () => {
+  const handleLogout = async (e) => {
     localStorage.clear();
     sessionStorage.clear();
     navigate('/login');
