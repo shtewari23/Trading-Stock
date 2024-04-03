@@ -130,18 +130,18 @@ const DashboardDefault = () => {
 
   const url = new URL(window.location.href);
   const code = url.searchParams.get("code");
-  const [isDataFetched, setIsDataFetched] = React.useState(false);
   const [userId, setUserId] = useState(
     sessionStorage.getItem("userId") ?? null
   );
   const [accountId, setAccountId] = useState(
     sessionStorage.getItem("accountId") ?? null
   );
+  console.log({code})
   const fetchData = async (codeValue) => {
     try {
   
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/oidc/getToken?code=${code}&clientId=${process.env.NEXT_PUBLIC_OIDC_CLIENT_ID}`,
+        `${process.env.REACT_APP_BASE_URL}/oidc/getToken?code=${code}&clientId=${process.env.REACT_APP_OIDC_CLIENT_ID}`,
         {},
         {
           headers: {
@@ -165,15 +165,15 @@ const DashboardDefault = () => {
     }
   };
   React.useLayoutEffect(() => {
-    if (code && code?.length > 0 && !isDataFetched) {
+    if (code && code?.length > 0) {
       fetchData(code);
     }
-  }, [code, isDataFetched]);
+  }, []);
 
   const getRbacResources = async (userId, accountId) => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/rbacController/getAllAttributesForRole?appId=${process.env.NEXT_PUBLIC_APPLICATION_ID}&userId=${userId}&accountid=${accountId}`,
+        `${process.env.REACT_APP_BASE_URL}/rbacController/getAllAttributesForRole?appId=${process.env.REACT_APP_APPLICATION_ID}&userId=${userId}&accountid=${accountId}`,
         {
           headers: {
             "content-type": "application/json",
@@ -191,7 +191,7 @@ const DashboardDefault = () => {
   };
 
 
-console.log(hasDashboardAccess,"222")
+  console.log('Rendering...');
   return (
     <>
     {hasDashboardAccess ? (

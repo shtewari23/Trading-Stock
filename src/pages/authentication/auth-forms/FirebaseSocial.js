@@ -34,7 +34,7 @@ const FirebaseSocial = () => {
       const scope = "openid profile";
       const response_type = "code";
       const anchorTg = document.createElement("a");
-      anchorTg.href = `https://openid.axiomprotect.com/oidc/authorize?client_id=${client_id}&scope=${scope}&response_type=${response_type}&response_mode=query&redirect_uri=${window.location.protocol}//${window.location.host}/dashboard`;
+      anchorTg.href = `https://openid.axiomprotect.com/oidc/authorize?client_id=${client_id}&scope=${scope}&response_type=${response_type}&response_mode=query&redirect_uri=${window.location.protocol}//${window.location.host}/dashboard/default`;
       document.body.appendChild(anchorTg);
       anchorTg.click();
 
