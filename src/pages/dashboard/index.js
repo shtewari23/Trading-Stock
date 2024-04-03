@@ -32,8 +32,12 @@ import avatar1 from 'assets/images/users/avatar-1.png';
 import avatar2 from 'assets/images/users/avatar-2.png';
 import avatar3 from 'assets/images/users/avatar-3.png';
 import avatar4 from 'assets/images/users/avatar-4.png';
+import Access from './Access';
 
 // avatar style
+
+
+
 const avatarSX = {
   width: 36,
   height: 36,
@@ -65,19 +69,75 @@ const status = [
     label: 'This Year'
   }
 ];
+const roleAttributes = [
+      {
+          "read": "true",
+          "attributename": "dashboard",
+          "write": "true"
+      },
+  
+      {
+        "read": "false",
+        "attributename": "stats",
+        "write": "true"
+    },
+
+  {
+    "read": "false",
+    "attributename": "recentOrders",
+    "write": "true"
+},
+{
+  "read": "false",
+  "attributename": "salesReport",
+  "write": "true"
+},
+{
+  "read": "true",
+  "attributename": "trades",
+  "write": "true"
+},
+{
+  "read": "true",
+  "attributename": "transactionHistory",
+  "write": "true"
+},
+{
+  "read": "true",
+  "attributename": "profit",
+  "write": "true"
+},
+
+  ]
 
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
 const DashboardDefault = () => {
   const [value, setValue] = useState('today');
   const [slot, setSlot] = useState('week');
+  const hasDashboardAccess = roleAttributes.some(attribute => attribute.attributename === 'dashboard' && attribute.read === 'true');
+  const hasStatsAccess = roleAttributes.some(attribute => attribute.attributename === 'stats' && attribute.read === 'true');
+  const hasTradeAccess = roleAttributes.some(attribute => attribute.attributename === 'trades' && attribute.read === 'true');
+  const hasRecentAccess = roleAttributes.some(attribute => attribute.attributename === 'recentOrders' && attribute.read === 'true');
+  const hasSalesAccess = roleAttributes.some(attribute => attribute.attributename === 'salesReport' && attribute.read === 'true');
+  const hasTransactionAccess = roleAttributes.some(attribute => attribute.attributename === 'transactionHistory' && attribute.read === 'true');
+  const hasProfitAccess = roleAttributes.some(attribute => attribute.attributename === 'profit' && attribute.read === 'true');
 
+
+
+
+console.log(hasDashboardAccess,"222")
   return (
+    <>
+    {hasDashboardAccess ? (
+      <>
     <Grid container rowSpacing={4.5} columnSpacing={2.75}>
       {/* row 1 */}
       <Grid item xs={12} sx={{ mb: -2.25 }}>
         <Typography variant="h5">Dashboard</Typography>
       </Grid>
+      {hasStatsAccess ? (
+        <>
       <Grid item xs={12} sm={6} md={4} lg={3}>
         <AnalyticEcommerce title="Total Order Placed" count="30" percentage={5.3} extra="3" />
       </Grid>
@@ -90,15 +150,29 @@ const DashboardDefault = () => {
       <Grid item xs={12} sm={6} md={4} lg={3}>
         <AnalyticEcommerce title="Net Loss" count="$1000" percentage={27.4} isLoss color="warning" extra="$500" />
       </Grid>
+      </>
+      ):(   <>  
+   <Grid item xs={12} sx={{ mb: -2.25 }}>
 
+        <Access/>
+        </Grid>
+        </>
+      )
+      }
+
+
+      
       <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
 
       {/* row 2 */}
       <Grid item xs={12} md={7} lg={8}>
+      
         <Grid container alignItems="center" justifyContent="space-between">
-          <Grid item>
+        <Grid item>
             <Typography variant="h5">Trades</Typography>
           </Grid>
+
+
           <Grid item>
             <Stack direction="row" alignItems="center" spacing={0}>
               <Button
@@ -120,11 +194,19 @@ const DashboardDefault = () => {
             </Stack>
           </Grid>
         </Grid>
+
+        {hasTradeAccess ?(
+<>
         <MainCard content={false} sx={{ mt: 1.5 }}>
           <Box sx={{ pt: 1, pr: 2 }}>
             <IncomeAreaChart slot={slot} />
           </Box>
         </MainCard>
+        </>
+        ):(
+          <Access/>
+        )}
+        
       </Grid>
       <Grid item xs={12} md={5} lg={4}>
         <Grid container alignItems="center" justifyContent="space-between">
@@ -133,6 +215,8 @@ const DashboardDefault = () => {
           </Grid>
           <Grid item />
         </Grid>
+        {hasProfitAccess ? (
+          <>
         <MainCard sx={{ mt: 2 }} content={false}>
           <Box sx={{ p: 3, pb: 0 }}>
             <Stack spacing={2}>
@@ -144,6 +228,9 @@ const DashboardDefault = () => {
           </Box>
           <MonthlyBarChart />
         </MainCard>
+        </>
+        ):(
+         < Access/>        )}
       </Grid>
 
       {/* row 3 */}
@@ -152,19 +239,36 @@ const DashboardDefault = () => {
           <Grid item>
             <Typography variant="h5">Recent Orders</Typography>
           </Grid>
+
+
           <Grid item />
         </Grid>
+        {hasRecentAccess ? (
+
         <MainCard sx={{ mt: 2 }} content={false}>
           <OrdersTable />
         </MainCard>
+        ):(
+          <Access/>
+        )
+}
       </Grid>
      
       {/* row 4 */}
       <Grid item xs={12} md={7} lg={8}>
-        <Grid container alignItems="center" justifyContent="space-between">
-          <Grid item>
+      <Grid item>
             <Typography variant="h5">Sales Report</Typography>
           </Grid>
+      {hasSalesAccess ? (
+        <>
+
+      
+
+         
+        <Grid container alignItems="center" justifyContent="space-between">
+          
+
+
           <Grid item>
             <TextField
               id="standard-select-currency"
@@ -181,7 +285,10 @@ const DashboardDefault = () => {
               ))}
             </TextField>
           </Grid>
+          
+         
         </Grid>
+        
         <MainCard sx={{ mt: 1.75 }}>
           <Stack spacing={1.5} sx={{ mb: -12 }}>
             <Typography variant="h6" color="secondary">
@@ -191,7 +298,14 @@ const DashboardDefault = () => {
           </Stack>
           <SalesColumnChart />
         </MainCard>
+</>
+      ):(
+        <Access/>
+      )}
       </Grid>
+
+
+
       <Grid item xs={12} md={5} lg={4}>
         <Grid container alignItems="center" justifyContent="space-between">
           <Grid item>
@@ -199,6 +313,9 @@ const DashboardDefault = () => {
           </Grid>
           <Grid item />
         </Grid>
+
+        {hasTransactionAccess ? (
+<>
         <MainCard sx={{ mt: 2 }} content={false}>
           <List
             component="nav"
@@ -283,6 +400,9 @@ const DashboardDefault = () => {
             </ListItemButton>
           </List>
         </MainCard>
+        </>
+            ):(<Access/>)
+          }
         <MainCard sx={{ mt: 2 }}>
           <Stack spacing={3}>
             <Grid container justifyContent="space-between" alignItems="center">
@@ -310,8 +430,17 @@ const DashboardDefault = () => {
             </Button>
           </Stack>
         </MainCard>
+    
+
       </Grid>
     </Grid>
+    </>
+    ): (
+      <>
+        <h1>You do not have access</h1>
+      </>
+    )}
+    </>
   );
 };
 

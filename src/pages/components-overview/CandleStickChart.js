@@ -6,7 +6,16 @@ import Button from '@mui/material/Button';
 
 import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
+const roleAttributes = [
+  {
+      "read": "false",
+      "attributename": "trading",
+      "write": "true"
+  },
+]
 const CandlestickChart = ({ data }) => {
+  const hasTradingAccess = roleAttributes.some(attribute => attribute.attributename === 'trading' && attribute.read === 'true');
+
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredData, setFilteredData] = useState([]);
   const [quantity, setQuantity] = useState('');
@@ -35,8 +44,11 @@ const CandlestickChart = ({ data }) => {
     console.log('Sell:', quantity, priceLimit);
   };
 
+
   return (
     <div className="container">
+      {hasTradingAccess ? (
+        <>
       <div className="search-bar">
       
         <TextField id="outlined-basic" label="Search Stock ..." variant="outlined" value={searchTerm}
@@ -107,7 +119,13 @@ Sell</Button>      </div>
           </div>
         ))}
       </div>
-     
+      </>
+      ):(
+        <h2>
+          You dont have access
+        </h2>
+      )
+}
     </div>
   );
 };
