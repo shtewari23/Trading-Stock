@@ -1,5 +1,5 @@
-import { useState } from 'react';
-
+import React, { useState } from 'react';
+import axios from 'axios'
 // material-ui
 import {
   Avatar,
@@ -113,6 +113,11 @@ const roleAttributes = [
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
 const DashboardDefault = () => {
+  const storedData = sessionStorage.getItem("attributeData");
+  const initialData = storedData ? JSON.parse(storedData) : {};
+  const [menuItems, setMenuItems] = React.useState(initialData);
+  console.log({ menuItems });
+
   const [value, setValue] = useState('today');
   const [slot, setSlot] = useState('week');
   const hasDashboardAccess = roleAttributes.some(attribute => attribute.attributename === 'dashboard' && attribute.read === 'true');
@@ -123,7 +128,67 @@ const DashboardDefault = () => {
   const hasTransactionAccess = roleAttributes.some(attribute => attribute.attributename === 'transactionHistory' && attribute.read === 'true');
   const hasProfitAccess = roleAttributes.some(attribute => attribute.attributename === 'profit' && attribute.read === 'true');
 
+  const url = new URL(window.location.href);
+  const code = url.searchParams.get("code");
+  const [isDataFetched, setIsDataFetched] = React.useState(false);
+  const [userId, setUserId] = useState(
+    sessionStorage.getItem("userId") ?? null
+  );
+  const [accountId, setAccountId] = useState(
+    sessionStorage.getItem("accountId") ?? null
+  );
+  const fetchData = async (codeValue) => {
+    try {
+  
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/oidc/getToken?code=${code}&clientId=${process.env.NEXT_PUBLIC_OIDC_CLIENT_ID}`,
+        {},
+        {
+          headers: {
+            "content-type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "*",
+          },
+        },
+      );
+        console.log({data: response.data})
+      if (response.data?.resultData) {
+        const data=JSON.parse(response.data?.resultData);
+          setUserId(data?.userid);
+          setAccountId(data?.accountid);
+          sessionStorage.setItem("userId", data?.userid);
+          sessionStorage.setItem("accountId", data?.accountid);
+          await getRbacResources(data?.userid, data?.accountid);
+      }
+    } catch (error) {
+      console.log("Error fetching data:", error);
+    }
+  };
+  React.useLayoutEffect(() => {
+    if (code && code?.length > 0 && !isDataFetched) {
+      fetchData(code);
+    }
+  }, [code, isDataFetched]);
 
+  const getRbacResources = async (userId, accountId) => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/rbacController/getAllAttributesForRole?appId=${process.env.NEXT_PUBLIC_APPLICATION_ID}&userId=${userId}&accountid=${accountId}`,
+        {
+          headers: {
+            "content-type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "*",
+          },
+        }
+      );
+      console.log("getAllAttributesForRole:", response?.data);
+      setMenuItems(response.data?.resultData);
+      sessionStorage.setItem("attributeData", JSON.stringify(response.data?.resultData));
+    } catch (error) {
+      console.log("Error fetching attributes for role:", error);
+    }
+  };
 
 
 console.log(hasDashboardAccess,"222")
