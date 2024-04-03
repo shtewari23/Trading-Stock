@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import axios from "axios";
 // material-ui
 import {
@@ -180,10 +180,10 @@ const DashboardDefault = () => {
     sessionStorage.getItem("accountId") ?? null
   );
   console.log({ code });
-  const fetchData = async (codeValue) => {
+  const fetchData = useCallback(async (codeValue) => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/oidc/getToken?code=${code}&clientId=${process.env.REACT_APP_OIDC_CLIENT_ID}`,
+        `${process.env.REACT_APP_BASE_URL}/oidc/getToken?code=${codeValue}&clientId=${process.env.REACT_APP_OIDC_CLIENT_ID}`,
         {},
         {
           headers: {
@@ -205,13 +205,15 @@ const DashboardDefault = () => {
     } catch (error) {
       console.log("Error fetching data:", error);
     }
-  };
+  }, []);
+  const [prevCode, setPrevCode] = useState('');
+
   React.useLayoutEffect(() => {
-    if (code && code?.length > 0) {
+    if (code && code?.length > 0 && code !== prevCode) {
+      setPrevCode(code);
       fetchData(code);
     }
-  }, []);
-
+  }, [code, fetchData]);
   const getRbacResources = async (userId, accountId) => {
     try {
       const response = await axios.get(

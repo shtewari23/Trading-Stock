@@ -2,7 +2,8 @@
 import { useTheme } from "@mui/material/styles";
 import { useMediaQuery, Button, Stack } from "@mui/material";
 import AxiosInstance from "helper/Server";
-
+import * as axiomLogo from '../../../assets/axiom.png'
+import { Box } from "@mui/material";
 // assets
 
 // ==============================|| FIREBASE - SOCIAL BUTTON ||============================== //
@@ -61,7 +62,10 @@ const FirebaseSocial = () => {
     >
       <Button
         startIcon={
-          <img src="/public/axiom.png" width={20} height={20} alt="logo" />
+          <Box>
+            <img src={'https://access.axiomprotect.com:6651/static/media/axiom_protect_logo.2f0f3f5d7374650dcb17.png'} width={20} height={20} alt="logo" />
+          </Box>
+          
         }
         variant="outlined"
         color="primary"
