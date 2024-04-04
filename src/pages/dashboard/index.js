@@ -200,18 +200,20 @@ const DashboardDefault = () => {
         setAccountId(data?.accountid);
         sessionStorage.setItem("userId", data?.userid);
         sessionStorage.setItem("accountId", data?.accountid);
+        sessionStorage.setItem("username", data?.username);
+        sessionStorage.setItem("emailId", data?.email);
         await getRbacResources(data?.userid, data?.accountid);
       }
     } catch (error) {
       console.log("Error fetching data:", error);
     }
   }, []);
-  const [prevCode, setPrevCode] = useState('');
+  const [prevCode, setPrevCode] = useState("");
 
   React.useLayoutEffect(() => {
     if (code && code?.length > 0 && code !== prevCode) {
       setPrevCode(code);
-      // fetchData(code);
+      fetchData(code);
     }
   }, [code, fetchData]);
   const getRbacResources = async (userId, accountId) => {
@@ -231,6 +233,10 @@ const DashboardDefault = () => {
       sessionStorage.setItem(
         "attributeData",
         JSON.stringify(response.data?.resultData)
+      );
+      sessionStorage.setItem(
+        "roleName",
+        JSON.stringify(response.data?.resultData?.roleName)
       );
     } catch (error) {
       console.log("Error fetching attributes for role:", error);
