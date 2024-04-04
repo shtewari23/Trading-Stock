@@ -33,6 +33,14 @@ const CandlestickChart = ({ data }) => {
     (attribute) =>
       attribute.attributename === "Buy" && attribute.read === "true"
   );
+  
+  const hasSearchAccess =
+  menuItems &&
+  menuItems?.some(
+    (attribute) =>
+      attribute.attributename === "Search" && attribute.read === "true"
+  );
+  console.log(hasSearchAccess,"00")
 
   console.log(hasBuyAccess,"333")
   const [searchTerm, setSearchTerm] = useState('');
@@ -73,6 +81,7 @@ const CandlestickChart = ({ data }) => {
         <TextField id="outlined-basic" label="Search Stock ..." variant="outlined" value={searchTerm}
          
           onChange={handleSearch} 
+          disabled ={!hasSearchAccess}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
