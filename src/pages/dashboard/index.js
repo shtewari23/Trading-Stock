@@ -211,7 +211,7 @@ const DashboardDefault = () => {
   React.useLayoutEffect(() => {
     if (code && code?.length > 0 && code !== prevCode) {
       setPrevCode(code);
-      fetchData(code);
+      // fetchData(code);
     }
   }, [code, fetchData]);
   const getRbacResources = async (userId, accountId) => {

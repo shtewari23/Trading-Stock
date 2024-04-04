@@ -21,13 +21,13 @@ import reportWebVitals from './reportWebVitals';
 const container = document.getElementById('root');
 const root = createRoot(container); // createRoot(container!) if you use TypeScript
 root.render(
-  <StrictMode>
+  // <StrictMode>
     <ReduxProvider store={store}>
       <BrowserRouter basename="/">
         <App />
       </BrowserRouter>
     </ReduxProvider>
-  </StrictMode>
+  // </StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
