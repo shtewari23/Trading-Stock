@@ -30,10 +30,15 @@
     padding: 20px;
     margin-top: 14px;
   }
-  
+  .wallet-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
   .trade-panel {
     width: 100%;
     background-color:#aee4f2;
+    
     padding: 20px;
     opacity: 1;
     border-radius: 10px;

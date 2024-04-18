@@ -32,6 +32,7 @@ const FirebaseSocial = () => {
   const handleLoginWithAxiom = async (e) => {
     try {
       const client_id = process.env.REACT_APP_OIDC_CLIENT_ID;
+      console.log(client_id,"222")
       const scope = "openid profile";
       const response_type = "code";
       const anchorTg = document.createElement("a");

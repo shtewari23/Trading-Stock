@@ -10,12 +10,12 @@ function createData(trackingNo, name, fat, carbs, protein) {
 }
 
 const rows = [
-  createData(84564564, 'Reliance', 40, 2, 40570),
+  createData(84564564, '', 40, 2, 40570),
   createData(98764564, 'Bajaj-Auto', 300, 0, 180139),
   createData(98756325, 'Maruti', 355, 1, 90989),
   createData(98652366, 'NTPC Ltd', 50, 1, 10239),
   createData(13286564, 'Maruti', 100, 1, 83348),
-  createData(86739658, 'Reliance', 99, 0, 410780),
+  createData(86739658, '', 99, 0, 410780),
   createData(13256498, 'Asian Paints Ltd', 125, 2, 70999),
   createData(98753263, 'HDFC Banks Ltd', 89, 2, 10570),
   createData(98753275, 'Maruti', 185, 1, 98063),
