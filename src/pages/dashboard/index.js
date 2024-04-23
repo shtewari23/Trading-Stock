@@ -193,16 +193,31 @@ const DashboardDefault = () => {
           },
         }
       );
-      console.log({ data: response.data });
+      console.log({ data: response.data },"1001");
       if (response.data?.resultData) {
-        const data = JSON.parse(response.data?.resultData);
-        setUserId(data?.userid);
-        setAccountId(data?.accountid);
-        sessionStorage.setItem("userId", data?.userid);
-        sessionStorage.setItem("accountId", data?.accountid);
-        sessionStorage.setItem("username", data?.username);
-        sessionStorage.setItem("emailId", data?.email);
-        await getRbacResources(data?.userid, data?.accountid);
+        const resultData = JSON.parse(response.data?.resultData);
+        // Parse the tokenResponse field
+        const tokenResponse = JSON.parse(resultData.tokenResponse);
+        localStorage.setItem("accessToken", tokenResponse.access_token);
+        localStorage.setItem("idToken", tokenResponse.id_token);
+        localStorage.setItem("id_token", tokenResponse.id_token);
+
+        localStorage.setItem("expiresIn", tokenResponse.expires_in.toString());
+        // Parse the userInfoResponse field
+        const userInfoResponse = JSON.parse(resultData.userInfoResponse);
+        console.log({ resultData, tokenResponse, userInfoResponse });
+        console.log(userInfoResponse,"222")
+        console.log(userInfoResponse.userid,"22")
+        setUserId(userInfoResponse?.userid);
+        setAccountId(userInfoResponse?.accountid);
+        sessionStorage.setItem("userId", userInfoResponse?.userid);
+        sessionStorage.setItem("accountId", userInfoResponse?.accountid);
+        sessionStorage.setItem("emailId", userInfoResponse?.email);
+        sessionStorage.setItem("username", userInfoResponse?.username);
+        await getRbacResources(
+          userInfoResponse?.userid,
+          userInfoResponse?.accountid
+        );
       }
     } catch (error) {
       console.log("Error fetching data:", error);

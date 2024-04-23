@@ -18,6 +18,8 @@ import { useRes } from 'Context';
 
 const CandlestickChart = ({ data }) => {
     const {res,setRes} = useRes();
+    const {otpRes,setOtpRes} = useRes();
+
 console.log(res,"777")
     const storedData = sessionStorage.getItem("attributeData");
     const initialData = storedData
@@ -100,7 +102,6 @@ console.log(res,"777")
 if(res === 0 & buy === 1){
     setOpenModal(false)
     console.log("101",openModal)
-    
     const totalPrice = parseFloat(priceLimit) * parseFloat(quantity);
     if (totalPrice <= walletBalance) {
         // Sufficient balance, update wallet and add bought stock
@@ -134,9 +135,55 @@ if(res === 0 & buy === 1){
         setPopupMessage('You do not have sufficient balance to buy this stock.');
         setPopupOpen(true);
     }
+ 
 }
-    
+
+
+else{
+    setOpenModal(false);
+    console.log("dd")
+
+}
+   setRes() 
 },[res])
+useEffect(() => {
+    if (res === 0 && sell === 1) {
+        // Handle Sell Logic
+        const totalPrice = parseFloat(priceLimit) * parseFloat(quantity);
+        const existingStockIndex = boughtStocks.findIndex(
+            (stock) => stock.name === selectedStock
+        );
+
+        if (existingStockIndex === -1 || boughtStocks[existingStockIndex].quantity < quantity) {
+            // Stock not owned or not enough quantity to sell
+            setPopupTitle('Cannot Sell Stock');
+            setPopupMessage(`You do not own enough shares of ${selectedStock} to sell.`);
+            setPopupOpen(true);
+        } else {
+            // Sufficient stock, proceed with sell operation
+            const updatedStocks = [...boughtStocks];
+            const stockToSell = updatedStocks[existingStockIndex];
+
+            stockToSell.quantity -= parseInt(quantity);
+            stockToSell.totalPrice -= totalPrice;
+
+            if (stockToSell.quantity === 0) {
+                // Remove the stock if no quantity is left
+                updatedStocks.splice(existingStockIndex, 1);
+            }
+
+            setBoughtStocks(updatedStocks);
+            setWalletBalance(walletBalance + totalPrice);
+
+            setPopupTitle('Stock Sold Successfully');
+            setPopupMessage(`You have successfully sold ${quantity} shares of ${selectedStock}.`);
+            setPopupOpen(true);
+        }
+
+        setOpenModal(false);
+        setSell(0); // Reset the sell flag
+    }
+}, [res, sell]);
 
 
   function generateToken() {

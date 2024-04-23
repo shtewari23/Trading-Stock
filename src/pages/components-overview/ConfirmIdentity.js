@@ -142,6 +142,7 @@ function Confirmidentity(setOpenModal) {
   const location = useLocation();
 
   const {res,setRes} = useRes();
+  
   // const location: LocationState = useLocation();
   //const [loginForm, setloginForm] = React.useState()
   const classes = useStyles();
@@ -268,10 +269,11 @@ const navigate =useNavigate('')
       .then(async (response) => {
         // console.log(JSON.parse(response.data));
         if (response.data.resultCode === 0) {
-            setOpenModal(false);
             setRes(0)
             console.log("101")
           setIsPushSend(true);
+          sessionStorage.setItem("pushId",response.data.resultData)
+
           console.log("111",response)
         } else {
           console.log("error");
@@ -414,13 +416,11 @@ const navigate =useNavigate('')
             setRes(0)
 
             console.log(response.data,"910")
-            setOpenModal(false)
 
           console.log("res data handleOTPVerifcation", response?.data);
         } else {
           setISMobileVerification(false);
 
-          setOpenModal(false);
           setRes(1)
           Swal.fire({
             title: "Error",
@@ -428,12 +428,13 @@ const navigate =useNavigate('')
             icon: "error",
             showCancelButton: true,
           });
+          console.log("909")
         }
       })
       .catch((err) => {
         setIsLoading(false);
-setOpenModal(false);
         console.log(err);
+        setRes(1)
 
         setISMobileVerification(false);
       });
@@ -464,13 +465,14 @@ setOpenModal(false);
         setIsLoading(false);
 
         if (response.data.resultCode === 0) {
-            setOpenModal(false);
             console.log("101")
 
             setRes(0)
 
           console.log("res data handleMobileOTPVerifcation", response?.data);
         } else {
+          setRes(1)
+
           Swal.fire({
             title: "OTP is Incorrect",
             text: "The OTP You Entered is Not Correct!!!",
@@ -518,7 +520,7 @@ setOpenModal(false);
       return <Completionist />;
     } else if (seconds % 2 === 0) {
       Server.post(
-        `/authenticator/checkPushTransactionStatus?userId=${sessionStorage?.getItem("userId")}&pushId=${requestId}&requestTime=${requestTime}`,
+        `/authenticator/checkPushTransactionStatus?userId=${sessionStorage?.getItem("userId")}&pushId=${sessionStorage?.getItem("pushId")}&requestTime=${requestTime}`,
         {},
         {
           headers: {
@@ -533,7 +535,6 @@ setOpenModal(false);
         .then(async (response) => {
           console.log(response.data);
           if (response.data.resultCode === 0) {
-            setOpenModal(false);
             setRes(0)
 
 console.log("333")
